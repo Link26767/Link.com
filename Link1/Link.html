@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='video_page.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
+</head>
+<body>
+    <div class="header">
+        <a href="/">Link</a>
+    </div>
+    <div class="video_block">
+        <video controls>
+            <source src="{{ url_for('static', filename='videos/' + video.id|string + '.mp4') }}" type="video/mp4">
+        </video>
+
+        <div class="actions">
+            <div class="like">
+                <button class="like_btn" id="{{ video.id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z"/></svg>0
+                </button>
+            </div>
+            <div class="dislike">
+                <button class="dislike_btn" id="{{ video.id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z"/></svg>0
+                </button>
+            </div>
+        </div>
+
+        <h1 class="name">Link in G1</h1>
+        <p class="desc">{{ video.desc }}</p>
+        <p class="author_name">{{ video.author_name }}</p>
+    </div>
+
+    <script>
+        like_btn = document.querySelector('.like_btn')
+        like_p = document.querySelector('.like_btn p')
+        like_btn.onclick = async function(event) {
+            await fetch('/' + like_btn.id.toString() + '/like', {
+                method: 'POST'
+            })
+            like_p.innerText = Number(like_p.innerText) + 1
+        }
+
+        dislike_btn = document.querySelector('.dislike_btn')
+        dislike_p = document.querySelector('.dislike_btn p')
+        dislike_btn.onclick = async function(event) {
+            console.log('/' + dislike_btn.id.toString() + '/dislike');
+            
+            await fetch('/' + dislike_btn.id.toString() + '/dislike', {
+                method: 'POST'
+            })
+            dislike_p.innerText = Number(dislike_p.innerText) + 1
+        }
+    </script>
+</body>
+</html>
